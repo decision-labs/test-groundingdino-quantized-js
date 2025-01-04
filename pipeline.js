@@ -4,7 +4,7 @@ import url from 'url';
 
 import { pipeline, env } from '@huggingface/transformers';
 
-class MyClassificationPipeline {
+export class MyClassificationPipeline {
   static task = 'text-classification';
   static model = 'Xenova/distilbert-base-uncased-finetuned-sst-2-english';
   static instance = null;
@@ -21,4 +21,3 @@ class MyClassificationPipeline {
   }
 }
 
-export default MyClassificationPipeline;

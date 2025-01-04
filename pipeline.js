@@ -2,7 +2,7 @@ import http from 'http';
 import querystring from 'querystring';
 import url from 'url';
 
-import { pipeline, env } from '@huggingface/transformers';
+import { pipeline, env, SamModel, AutoProcessor } from '@huggingface/transformers';
 
 export class MyClassificationPipeline {
   static task = 'text-classification';
@@ -21,3 +21,23 @@ export class MyClassificationPipeline {
   }
 }
 
+// add class for slimsam
+export class SegmentAnythingSingleton {
+  static model_id = 'Xenova/slimsam-77-uniform';
+  static model;
+  static processor;
+  static quantized = true;
+
+  static getInstance() {
+    if (!this.model) {
+      this.model = SamModel.from_pretrained(this.model_id, {
+        quantized: this.quantized,
+      });
+    }
+    if (!this.processor) {
+      this.processor = AutoProcessor.from_pretrained(this.model_id);
+    }
+
+    return Promise.all([this.model, this.processor]);
+  }
+}

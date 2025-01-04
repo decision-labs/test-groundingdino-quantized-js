@@ -2,7 +2,7 @@
 import http from "http";
 import querystring from "querystring";
 import url from "url";
-import { MyClassificationPipeline } from "./pipeline.js";
+import { MyClassificationPipeline, SegmentAnythingSingleton } from "./pipeline.js";
 
 const server = http.createServer();
 const hostname = "127.0.0.1";
@@ -14,14 +14,29 @@ server.on("request", async (req, res) => {
   const parsedUrl = url.parse(req.url);
 
   // Extract the query parameters
-  const { text } = querystring.parse(parsedUrl.query);
+  const { model_name, text, image_uri } = querystring.parse(parsedUrl.query);
+  if (!model_name) {
+    res.statusCode = 400;
+    res.end(JSON.stringify({ error: "model_name is required must be sam or classifier" }));
+    return;
+  }
+
+  let classifier, sam_model, sam_processor;
+  if (model_name === "sam") {
+    [sam_model, sam_processor] = await SegmentAnythingSingleton.getInstance();
+  }
+  if (model_name === "classifier") {
+    classifier = await MyClassificationPipeline.getInstance();
+  }
+  console.log(text, model_name, image_uri);
+
 
   // Set the response headers
   res.setHeader("Content-Type", "application/json");
 
   let response;
   if (parsedUrl.pathname === "/classify" && text) {
-    const classifier = await MyClassificationPipeline.getInstance();
+    // const classifier = await MyClassificationPipeline.getInstance();
     response = await classifier(text);
     res.statusCode = 200;
   } else {

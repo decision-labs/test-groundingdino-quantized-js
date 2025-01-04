@@ -21,6 +21,21 @@ export class MyClassificationPipeline {
   }
 }
 
+export class GroundingDinoSingleton {
+  static model_id = 'saburq/groundingdeno_model_quant_int8';
+  static model;
+  static processor;
+  static quantized = true;
+  static task = 'object-detection';
+
+  static async getInstance() {
+    if (!this.model) {
+      this.model = pipeline(this.task, this.model_id, { quantized: this.quantized });
+    }
+    return this.model;
+  }
+}
+
 // add class for slimsam
 export class SegmentAnythingSingleton {
   static model_id = 'Xenova/slimsam-77-uniform';

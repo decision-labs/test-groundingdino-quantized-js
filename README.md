@@ -28,6 +28,13 @@ python draw_boxes.py
 open output_with_boxes.png
 ```
 
+![output_with_boxes](./output_with_boxes_building.jpg)
+
+## Trying new labels
+
+In `draw_boxes.py` change the `text` to another label like `"tree"`.
+
+![output_with_boxes](./output_with_boxes_tree.jpg)
 ## Example API
 
 ```bash

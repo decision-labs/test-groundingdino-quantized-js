@@ -1,4 +1,9 @@
-This is to test the quantized groundingdino model see: [`saburq/groundingdeno_model_quant_int8`](https://huggingface.co/saburq/groundingdeno_model_quant_int8).
+## What is this?
+
+- This was a test to see if the quantized groundingdino model see: [`saburq/groundingdeno_model_quant_int8`](https://huggingface.co/saburq/groundingdeno_model_quant_int8) works. 
+
+
+- Now moved to offical version: [`onnx-community/grounding-dino-tiny-ONNX`](https://huggingface.co/onnx-community/grounding-dino-tiny-ONNX)
 
 ## Usage
 

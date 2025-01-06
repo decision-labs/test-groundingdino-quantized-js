@@ -58,10 +58,6 @@ if model_output:
     output_path = "output_with_boxes.jpg"
     cv2.imwrite(output_path, image)
 
-    # Optional: Display the image
-    # cv2.imshow("Detected Objects", image)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
 
     print(f"Output saved to {output_path}")
 else:

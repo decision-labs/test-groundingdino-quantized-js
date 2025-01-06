@@ -2,13 +2,28 @@ This is to test the quantized groundingdino model see: [`saburq/groundingdeno_mo
 
 ## Usage
 
+Install grounding-dino version of transformers.js
+```bash
+git clone git@github.com:huggingface/transformers.js.git
+cd transformers.js
+git checkout add-grounding-dino
+npm run build
+cd ..
+```
+
+Install dependencies.
+>**Make sure you are in the root of the repo.**
 ```bash
 yarn install
+```
+
+Run server
+```bash
 npx nodemon app.js
 ```
 
+Run client
 ```bash
-# client
 python draw_boxes.py
 open output_with_boxes.png
 ```

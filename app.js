@@ -2,7 +2,7 @@
 import http from "http";
 import querystring from "querystring";
 import url from "url";
-import { MyClassificationPipeline, SegmentAnythingSingleton } from "./pipeline.js";
+import { MyClassificationPipeline, SegmentAnythingSingleton, GroundingDinoSingleton } from "./pipeline.js";
 
 const server = http.createServer();
 const hostname = "127.0.0.1";
@@ -14,7 +14,7 @@ server.on("request", async (req, res) => {
   const parsedUrl = url.parse(req.url);
 
   // Extract the query parameters
-  const { model_name, text, image_uri } = querystring.parse(parsedUrl.query);
+  let { model_name, text, image_uri } = querystring.parse(parsedUrl.query);
   if (!model_name) {
     res.statusCode = 400;
     res.end(JSON.stringify({ error: "model_name is required must be sam or classifier" }));
@@ -28,13 +28,24 @@ server.on("request", async (req, res) => {
   if (model_name === "classifier") {
     classifier = await MyClassificationPipeline.getInstance();
   }
-  console.log(text, model_name, image_uri);
+  if (model_name === "object-detection") {
+    if(!Array.isArray(text)) {
+      if(!text.endsWith(".")) text = text + ".";
+      text = [text];
+    }
+    const grounding_dino = await GroundingDinoSingleton.getInstance();
+    const features = await grounding_dino(image_uri, text, { threshold: 0.3 });
+    res.end(JSON.stringify(features));
+    return;
+  }
 
+  console.log(text, model_name, image_uri);
 
   // Set the response headers
   res.setHeader("Content-Type", "application/json");
 
   let response;
+
   if (parsedUrl.pathname === "/classify" && text) {
     // const classifier = await MyClassificationPipeline.getInstance();
     response = await classifier(text);

@@ -9,6 +9,8 @@
 
 Install grounding-dino version of transformers.js
 ```bash
+git clone git@github.com:decision-labs/test-groundingdino-quantized-js.git
+cd test-groundingdino-quantized-js
 git clone git@github.com:huggingface/transformers.js.git
 cd transformers.js
 git checkout add-grounding-dino
